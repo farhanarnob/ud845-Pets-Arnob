@@ -28,7 +28,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.pets.data.PetContract;
 import com.example.android.pets.data.PetContract.PetEntry;
 import com.example.android.pets.data.PetDBHelper;
 
@@ -60,8 +59,14 @@ public class CatalogActivity extends AppCompatActivity {
     private void displayDatabaseInfo() {
 
         db = mPetDBHelper.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery("select * from " + PetContract.PetEntry.TABLE_NAME, null);
+        String[] projection = {
+                PetEntry._ID,
+                PetEntry.COLUMN_PET_NAME,
+                PetEntry.COLUMN_PET_BREED,
+                PetEntry.COLUMN_PET_GENDER,
+                PetEntry.COLUMN_PET_WEIGHT
+        };
+        Cursor cursor = db.query(PetEntry.TABLE_NAME, projection, null, null, null, null, null);
         try {
             TextView displayView = (TextView) findViewById(R.id.text_view_pet);
             displayView.setText("Number of row in pets database table " + cursor.getCount());
@@ -112,5 +117,11 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(PetEntry.COLUMN_PET_WEIGHT, "7kg");
         return db.insert(PetEntry.TABLE_NAME, null, values);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        displayDatabaseInfo();
     }
 }
