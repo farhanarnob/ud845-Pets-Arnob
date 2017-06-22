@@ -19,6 +19,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -118,13 +119,7 @@ public class CatalogActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
-                long newRowID = insertPet();
-                if (newRowID != -1) {
-                    displayDatabaseInfo();
-                    Toast.makeText(getBaseContext(), "Inserted data row id: " + newRowID, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getBaseContext(), "No data inserted", Toast.LENGTH_SHORT).show();
-                }
+                insertPet();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
@@ -134,8 +129,7 @@ public class CatalogActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private long insertPet() {
-        db = mPetDBHelper.getWritableDatabase();
+    private void insertPet() {
 
         // Creating contentValues which will be used for database data insert
         ContentValues values = new ContentValues();
@@ -143,8 +137,15 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(PetEntry.COLUMN_PET_BREED, "Terrier");
         values.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_MALE);
         values.put(PetEntry.COLUMN_PET_WEIGHT, "7kg");
-        return db.insert(PetEntry.TABLE_NAME, null, values);
-
+        Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
+        if (newUri == null) {
+            Toast.makeText(getApplicationContext(), getString(R.string.dummy_data_not_inserted),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            displayDatabaseInfo();
+            Toast.makeText(getApplicationContext(), getString(R.string.dummy_data_inserted),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
