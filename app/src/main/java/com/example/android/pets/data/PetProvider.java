@@ -137,7 +137,49 @@ public class PetProvider extends ContentProvider {
      */
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+        final int match = sURI_MATCHER.match(uri);
+        switch (match) {
+            case PETS:
+                return updatePet(uri, contentValues, selection, selectionArgs);
+            case PET_ID:
+                selection = PetContract.PetEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                return updatePet(uri, contentValues, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException("Update is not supported for " + uri);
+        }
+    }
+
+    private int updatePet(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+        sanityCheckForUpdate(contentValues);
+        SQLiteDatabase database = mPetDBHelper.getWritableDatabase();
+        int numbersOfRow = database.update(PetContract.PetEntry.TABLE_NAME, contentValues, selection,
+                selectionArgs);
+        if (numbersOfRow < 1) {
+
+        }
         return 0;
+    }
+
+    private void sanityCheckForUpdate(ContentValues contentValues) {
+        if (contentValues.containsKey(PetContract.PetEntry.COLUMN_PET_NAME)) {
+            String name = contentValues.getAsString(PetContract.PetEntry.COLUMN_PET_NAME);
+            if (name == null || name.equals("")) {
+                throw new IllegalArgumentException("Pet requires a pet name");
+            }
+        }
+        if (contentValues.containsKey(PetContract.PetEntry.COLUMN_PET_GENDER)) {
+            Integer genderType = contentValues.getAsInteger(PetContract.PetEntry.COLUMN_PET_GENDER);
+            if (genderType == null || !PetContract.PetEntry.validGender(genderType)) {
+                throw new IllegalArgumentException("pet requires valid gender");
+            }
+        }
+        if (contentValues.containsKey(PetContract.PetEntry.COLUMN_PET_WEIGHT)) {
+            Integer weight = contentValues.getAsInteger(PetContract.PetEntry.COLUMN_PET_WEIGHT);
+            if (weight != null && weight < 0) {
+                throw new IllegalArgumentException("Pet requires valid weight");
+            }
+        }
     }
 
     /**
