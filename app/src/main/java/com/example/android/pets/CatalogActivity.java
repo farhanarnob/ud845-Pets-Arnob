@@ -70,9 +70,16 @@ public class CatalogActivity extends AppCompatActivity {
                 PetEntry.COLUMN_PET_WEIGHT
         };
         //Cursor cursor = db.query(PetEntry.TABLE_NAME, projection, null, null, null, null, null);
-        Cursor cursor = getContentResolver().query(PetEntry.CONTENT_URI, projection, null, null, null);
+        Cursor cursor = getContentResolver().query(
+                PetEntry.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null);
 
         ListView listView = (ListView) findViewById(R.id.list_view_pet);
+        View emptyView = findViewById(R.id.empty_view);
+        listView.setEmptyView(emptyView);
         PetCursorAdapter petCursorAdapter = new PetCursorAdapter(this, cursor);
         listView.setAdapter(petCursorAdapter);
     }

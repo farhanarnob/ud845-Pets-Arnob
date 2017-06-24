@@ -62,4 +62,6 @@
     <string name="editor_insert_pet_failed">Pet not saved.</string>
     <string name="dummy_data_inserted">dummy data inserted</string>
     <string name="dummy_data_not_inserted">dummy data not inserted</string>
+    <string name="empty_view_title_text">It\'s a bit lonely here..</string>
+    <string name="empty_view_subtitle_text">Get started by adding a pet</string>
 </resources>
