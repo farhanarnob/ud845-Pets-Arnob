@@ -1,5 +1,6 @@
 package com.example.android.pets.data;
 
+import android.content.ContentResolver;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -44,6 +45,7 @@ public final class PetContract {
      */
     public static final String PATH_PETS = "pets";
 
+
     private PetContract() {
     }
 
@@ -54,6 +56,20 @@ public final class PetContract {
          */
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PETS);
         public final static String TABLE_NAME = "pets";
+
+        /**
+         * The MIME type of the {@link #CONTENT_URI} for a list of pets.
+         */
+        public static final String CONTENT_LIST_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" +
+                        CONTENT_AUTHORITY + "/" + PATH_PETS;
+
+        /**
+         * The MIME type of the {@link #CONTENT_URI} for a single pet.
+         */
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" +
+                        CONTENT_AUTHORITY + "/" + PATH_PETS;
 
         public final static String _ID = BaseColumns._ID;
         public final static String COLUMN_PET_NAME = "name";
@@ -70,5 +86,6 @@ public final class PetContract {
                     || genderType == GENDER_FEMALE;
         }
     }
+
 
 }

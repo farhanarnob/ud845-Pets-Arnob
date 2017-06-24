@@ -36,6 +36,7 @@ import com.example.android.pets.data.PetDBHelper;
  * Displays list of pets that were entered and stored in the app.
  */
 public class CatalogActivity extends AppCompatActivity {
+    private static final String TAG = CatalogActivity.class.getName();
     private SQLiteDatabase db;
     private PetDBHelper mPetDBHelper;
     @Override

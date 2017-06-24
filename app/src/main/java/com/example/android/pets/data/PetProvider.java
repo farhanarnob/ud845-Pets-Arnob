@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 /**
@@ -187,14 +188,34 @@ public class PetProvider extends ContentProvider {
      */
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        SQLiteDatabase database = mPetDBHelper.getWritableDatabase();
+        final int match = sURI_MATCHER.match(uri);
+        switch (match) {
+            case PETS:
+                return database.delete(PetContract.PetEntry.TABLE_NAME, selection, selectionArgs);
+            case PET_ID:
+                selection = PetContract.PetEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                return database.delete(PetContract.PetEntry.TABLE_NAME, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException("database to delete for this uri " + uri);
+        }
     }
 
     /**
      * Returns the MIME type of data for the content URI.
      */
     @Override
-    public String getType(Uri uri) {
-        return null;
+    public String getType(@NonNull Uri uri) {
+        int match = sURI_MATCHER.match(uri);
+        switch (match) {
+            case PETS:
+                return PetContract.PetEntry.CONTENT_LIST_TYPE;
+            case PET_ID:
+                return PetContract.PetEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalArgumentException("Unknown URI: " + uri + " with match " + match);
+        }
     }
+
 }
