@@ -65,6 +65,13 @@ public class EditorActivity extends AppCompatActivity {
 
         mPetDBHelper = new PetDBHelper(this);
 
+        Uri uri = getIntent().getData();
+        if (uri == null) {
+            setTitle(R.string.add_a_pet);
+        } else {
+            setTitle(R.string.edit_pet);
+        }
+
         // Find all relevant views that we will need to read user input from
         mNameEditText = (EditText) findViewById(R.id.edit_pet_name);
         mBreedEditText = (EditText) findViewById(R.id.edit_pet_breed);
