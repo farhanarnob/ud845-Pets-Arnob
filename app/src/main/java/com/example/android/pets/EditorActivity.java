@@ -80,6 +80,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mCurrentPetUri = getIntent().getData();
         if (mCurrentPetUri == null) {
             setTitle(R.string.add_a_pet);
+
+            // Enable hiding delete menu button to prevent delete option in insert pet mode
+            // next we have to override OnPrepareOptionMenu to hide delete menu option
+            invalidateOptionsMenu();
         } else {
             getLoaderManager().initLoader(EXISTING_PET_LOADER, null, this);
             setTitle(R.string.edit_pet);
@@ -145,6 +149,17 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Inflate the menu options from the res/menu/menu_editor.xml file.
         // This adds menu items to the app bar.
         getMenuInflater().inflate(R.menu.menu_editor, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if (mCurrentPetUri == null) {
+            MenuItem deleteMenu = menu.findItem(R.id.action_delete);
+            deleteMenu.setVisible(false);
+        }
+
         return true;
     }
 
