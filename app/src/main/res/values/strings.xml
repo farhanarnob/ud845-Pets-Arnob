@@ -66,4 +66,10 @@
     <string name="empty_view_subtitle_text">Get started by adding a pet</string>
     <string name="add_a_pet">Add a pet</string>
     <string name="edit_pet">Edit pet</string>
+    <string name="editor_pet_update_failed">Pet update failed</string>
+    <string name="editor_pet_update_successful">Pet update successful</string>
+    <string name="zero">0</string>
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep eding</string>
 </resources>

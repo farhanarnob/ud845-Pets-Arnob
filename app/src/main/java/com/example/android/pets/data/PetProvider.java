@@ -166,7 +166,7 @@ public class PetProvider extends ContentProvider {
         if (numbersOfRow > 0) {
             notifyChanges(uri);
         }
-        return 0;
+        return numbersOfRow;
     }
 
     private void notifyChanges(Uri uri) {
