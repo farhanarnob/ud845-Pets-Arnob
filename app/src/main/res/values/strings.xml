@@ -86,4 +86,7 @@
 
     <!-- Dialog button text for the option to cancel deletion of the current pet [CHAR LIMIT=20] -->
     <string name="cancel">Cancel</string>
+    <string name="catalog_all_pet_deleted">all pets deleted</string>
+    <string name="catalog_all_pet_delete_failed">not pet deleted</string>
+    <string name="unknown_breed">Unknown Breed</string>
 </resources>
